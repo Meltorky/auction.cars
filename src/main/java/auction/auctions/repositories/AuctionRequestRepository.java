@@ -22,4 +22,6 @@ public interface AuctionRequestRepository
             UUID carId,
             List<AuctionRequestStatus> statuses
     );
+
+    boolean existsByCar_Id(UUID carId);
 }

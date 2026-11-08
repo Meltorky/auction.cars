@@ -24,4 +24,9 @@ public interface AuctionRepository
     List<Auction> findByStatusOrderByEndsAtAsc(
             AuctionStatus status
     );
+
+    boolean existsByAuctionRequest_Car_IdAndStatusIn(
+            UUID carId,
+            List<AuctionStatus> statuses
+    );
 }
