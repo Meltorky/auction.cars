@@ -1,12 +1,13 @@
 
 package auction.cars.entities;
 
+import auction.cars.enums.BodyStyle;
+import auction.cars.enums.CarReviewStatus;
+import auction.users.User;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.NoArgsConstructor;
-import lombok.AllArgsConstructor;
+import lombok.*;
 
+import java.time.Instant;
 import java.util.UUID;
 
 @Entity
@@ -21,32 +22,45 @@ public class Car {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
-    @Column(name = "make", nullable = false, length = 100)
+    @Column(nullable = false, length = 100)
     private String make;
 
-    @Column(name = "model", nullable = false, length = 100)
+    @Column(nullable = false, length = 100)
     private String model;
 
-    @Column(name = "mileage", nullable = false)
+    @Column(nullable = false)
     private int mileage;
 
-    @Column(name = "engine", length = 100)
+    @Column(length = 100)
     private String engine;
 
-    @Column(name = "body_style", length = 50)
-    private String bodyStyle;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "body_style", nullable = false, length = 30)
+    private BodyStyle bodyStyle;
 
-    @Column(name = "exterior_color", length = 100)
+    @Column(name = "exterior_color", length = 50)
     private String exteriorColor;
 
-    @Column(name = "interior_color", length = 100)
+    @Column(name = "interior_color", length = 50)
     private String interiorColor;
 
-    @Column(name = "description", columnDefinition = "TEXT")
+    @Column(columnDefinition = "TEXT")
     private String description;
 
-    // Many cars belong to one owner
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "owner_id", nullable = false)
     private User owner;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "review_status", nullable = false, length = 30)
+    private CarReviewStatus reviewStatus = CarReviewStatus.DRAFT;
+
+    @Column(name = "submitted_at")
+    private Instant submittedAt;
+
+    @Column(name = "reviewed_at")
+    private Instant reviewedAt;
+
+    @Column(name = "review_notes", columnDefinition = "TEXT")
+    private String reviewNotes;
 }
