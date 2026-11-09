@@ -1,5 +1,6 @@
 package auction.auctions.services;
 
+import auction.auctions.abstracts.AuctionService;
 import auction.auctions.dtos.AuctionCreateDto;
 import auction.auctions.dtos.AuctionResponseDto;
 import auction.auctions.entities.Auction;
