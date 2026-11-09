@@ -8,7 +8,7 @@ import auction.auctions.entities.AuctionRequest;
 import auction.auctions.enums.AuctionRequestStatus;
 import auction.auctions.repositories.AuctionRequestRepository;
 import auction.auctions.enums.AuctionType;
-import auction.HttpRequests.CustomResponseException;
+import auction.shared.HttpRequests.CustomResponseException;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

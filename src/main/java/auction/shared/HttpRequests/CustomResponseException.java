@@ -1,4 +1,4 @@
-package auction.HttpRequests;
+package auction.shared.HttpRequests;
 
 import lombok.Getter;
 

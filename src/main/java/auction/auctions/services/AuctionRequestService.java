@@ -13,7 +13,7 @@ import auction.auctions.repositories.AuctionRepository;
 import auction.cars.entities.Car;
 import auction.cars.enums.CarReviewStatus;
 import auction.cars.repositories.CarRepository;
-import auction.HttpRequests.CustomResponseException;
+import auction.shared.HttpRequests.CustomResponseException;
 import auction.users.User;
 
 import lombok.RequiredArgsConstructor;

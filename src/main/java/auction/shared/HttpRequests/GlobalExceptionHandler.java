@@ -1,4 +1,4 @@
-package auction.HttpRequests;
+package auction.shared.HttpRequests;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

@@ -4,7 +4,7 @@ package auction.cars.services;
 import auction.auctions.enums.AuctionStatus;
 import auction.auctions.repositories.AuctionRepository;
 import auction.auctions.repositories.AuctionRequestRepository;
-import auction.HttpRequests.CustomResponseException;
+import auction.shared.HttpRequests.CustomResponseException;
 import auction.cars.dtos.CarRequestDto;
 import auction.cars.dtos.CarResponseDto;
 import auction.cars.entities.Car;
