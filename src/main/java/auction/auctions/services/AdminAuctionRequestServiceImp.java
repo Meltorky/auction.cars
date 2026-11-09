@@ -20,12 +20,13 @@ import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
-public class AdminAuctionRequestService {
+public class AdminAuctionRequestServiceImp implements auction.cars.abstracts.AdminAuctionRequestService {
 
     private final AuctionRequestRepository requestRepository;
 
     // Retrieves requests that are waiting for admin review.
     @Transactional(readOnly = true)
+    @Override
     public List<AdminAuctionRequestResponseDto> getPendingRequests() {
 
         return requestRepository
@@ -39,6 +40,7 @@ public class AdminAuctionRequestService {
 
     // Moves a submitted request into the admin review process.
     @Transactional
+    @Override
     public void startReview(UUID requestId) {
 
         AuctionRequest request = getRequest(requestId);
@@ -54,6 +56,7 @@ public class AdminAuctionRequestService {
 
     // Asks the owner to provide corrections before the request can proceed.
     @Transactional
+    @Override
     public void requestChanges(
             UUID requestId,
             AuctionRequestReviewDto dto) {
@@ -69,6 +72,7 @@ public class AdminAuctionRequestService {
 
     // Rejects an auction request and records the admin's reason.
     @Transactional
+    @Override
     public void rejectRequest(
             UUID requestId,
             AuctionRequestReviewDto dto) {
@@ -84,6 +88,7 @@ public class AdminAuctionRequestService {
 
     // Approves a request and stores the reserve price proposed by the admin.
     @Transactional
+    @Override
     public void approveRequest(
             UUID requestId,
             AuctionRequestApprovalDto dto) {

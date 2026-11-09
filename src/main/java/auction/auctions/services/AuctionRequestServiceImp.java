@@ -27,13 +27,14 @@ import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
-public class AuctionRequestService {
+public class AuctionRequestServiceImp implements auction.cars.abstracts.AuctionRequestService {
 
     private final AuctionRequestRepository requestRepository;
     private final CarRepository carRepository;
     private final AuctionRepository auctionRepository;
 
     @Transactional
+    @Override
     public AuctionRequestResponseDto submitRequest(
             AuctionRequestDto dto,
             User owner) {
@@ -66,6 +67,7 @@ public class AuctionRequestService {
     }
 
     @Transactional(readOnly = true)
+    @Override
     public List<AuctionRequestResponseDto> getMyRequests(UUID ownerId) {
 
         return requestRepository
@@ -76,6 +78,7 @@ public class AuctionRequestService {
     }
 
     @Transactional
+    @Override
     public void withdrawRequest(UUID requestId, User owner) {
 
         AuctionRequest request = requestRepository.findById(requestId)
@@ -104,6 +107,7 @@ public class AuctionRequestService {
 
     // Updates a request after admin feedback and resubmits it for review.
     @Transactional
+    @Override
     public AuctionRequestResponseDto updateAndResubmit(
             UUID requestId,
             AuctionRequestUpdateDto dto,

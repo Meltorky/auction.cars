@@ -4,7 +4,8 @@ package auction.auctions.controllers;
 import auction.auctions.dtos.AuctionRequestDto;
 import auction.auctions.dtos.AuctionRequestResponseDto;
 import auction.auctions.dtos.AuctionRequestUpdateDto;
-import auction.auctions.services.AuctionRequestService;
+import auction.auctions.services.AuctionRequestServiceImp;
+import auction.cars.abstracts.AuctionRequestService;
 import auction.users.User;
 
 import jakarta.validation.Valid;

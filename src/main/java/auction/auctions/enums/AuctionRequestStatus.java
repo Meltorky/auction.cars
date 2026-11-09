@@ -6,5 +6,6 @@ public enum AuctionRequestStatus {
     CHANGES_REQUESTED,
     APPROVED,
     REJECTED,
-    WITHDRAWN
+    WITHDRAWN,
+    AUCTION_CREATED
 }

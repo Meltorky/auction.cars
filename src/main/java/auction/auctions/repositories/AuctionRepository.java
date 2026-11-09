@@ -1,8 +1,6 @@
 package auction.auctions.repositories;
 
 import auction.auctions.entities.Auction;
-import auction.auctions.entities.AuctionRequest;
-import auction.auctions.enums.AuctionRequestStatus;
 import auction.auctions.enums.AuctionStatus;
 import jakarta.persistence.LockModeType;
 import org.jspecify.annotations.NullMarked;
@@ -20,20 +18,15 @@ public interface AuctionRepository extends JpaRepository<Auction, UUID> {
     @Override
     Optional<Auction> findById(UUID id);
 
+    // Checks whether an auction has already been created from a request.
     boolean existsByAuctionRequest_Id(UUID requestId);
 
-    List<Auction> findByStatusOrderByEndsAtAsc(
-            AuctionStatus status
-    );
+    // Retrieves auctions by status, ordered by their ending time.
+    List<Auction> findByStatusOrderByEndsAtAsc(AuctionStatus status);
 
+    // Checks whether a car has an auction in any of the supplied statuses.
     boolean existsByAuctionRequest_Car_IdAndStatusIn(
             UUID carId,
             List<AuctionStatus> statuses
     );
-
-
-    List<AuctionRequest> findByStatusInOrderBySubmittedAtAsc(
-            List<AuctionRequestStatus> statuses
-    );
-
 }

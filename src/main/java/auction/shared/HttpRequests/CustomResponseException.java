@@ -18,11 +18,11 @@ public class CustomResponseException extends RuntimeException {
     }
 
     public static CustomResponseException resourceMisMatch(String message) {
-        return new CustomResponseException(407, message);
+        return new CustomResponseException(409, message);
     }
 
     public static CustomResponseException resourceDuplicateData(String message) {
-        return new CustomResponseException(400, message);
+        return new CustomResponseException(409, message);
     }
 
     public static CustomResponseException serverDown(String message) {
