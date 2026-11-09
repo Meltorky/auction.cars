@@ -4,7 +4,7 @@ package auction.cars.services;
 import auction.auctions.enums.AuctionStatus;
 import auction.auctions.repositories.AuctionRepository;
 import auction.auctions.repositories.AuctionRequestRepository;
-import auction.auctions.shared.HttpRequests.CustomResponseException;
+import auction.HttpRequests.CustomResponseException;
 import auction.cars.dtos.CarRequestDto;
 import auction.cars.dtos.CarResponseDto;
 import auction.cars.entities.Car;
@@ -23,7 +23,7 @@ import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
-public class CarService {
+public class CarService implements auction.cars.abstracts.CarService {
 
     private final CarRepository carRepository;
     private final AuctionRepository auctionRepository;
@@ -31,6 +31,7 @@ public class CarService {
 
     // Create a new car
     @Transactional
+    @Override
     public CarResponseDto createCar(CarRequestDto dto, User owner) {
 
         Car car = new Car();
@@ -47,6 +48,7 @@ public class CarService {
 
     // Update an existing car
     @Transactional
+    @Override
     public CarResponseDto updateCar(
             UUID carId,
             CarRequestDto dto,
@@ -71,6 +73,7 @@ public class CarService {
 
     // Submit car for admin review
     @Transactional
+    @Override
     public CarResponseDto submitForReview(UUID carId, User owner) {
 
         Car car = getCar(carId);
@@ -91,6 +94,7 @@ public class CarService {
 
     // Delete a car before its first review submission
     @Transactional
+    @Override
     public void deleteCar(UUID carId, User owner) {
 
         Car car = getCar(carId);
@@ -114,6 +118,7 @@ public class CarService {
 
     // Get all cars belonging to the current owner
     @Transactional(readOnly = true)
+    @Override
     public List<CarResponseDto> getMyCars(UUID ownerId) {
 
         return carRepository.findByOwner_Id(ownerId)

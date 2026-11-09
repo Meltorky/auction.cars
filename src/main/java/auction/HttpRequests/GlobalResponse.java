@@ -1,4 +1,4 @@
-package auction.auctions.shared.HttpRequests;
+package auction.HttpRequests;
 
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import lombok.Getter;

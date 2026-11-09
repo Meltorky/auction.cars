@@ -1,4 +1,4 @@
-package auction.auctions.shared.HttpRequests;
+package auction.HttpRequests;
 
 import lombok.Getter;
 
@@ -8,8 +8,8 @@ public class CustomResponseException extends RuntimeException {
     private final int code;
 
     public CustomResponseException(int code, String message) {
-        this.code = code;
         super(message);
+        this.code = code;
     }
 
 
@@ -30,6 +30,6 @@ public class CustomResponseException extends RuntimeException {
     }
 
     public static CustomResponseException forbidden(String message) {
-        return new CustomResponseException(401, message);
+        return new CustomResponseException(403, message);
     }
 }

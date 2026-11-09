@@ -1,4 +1,4 @@
-package auction.auctions.shared.HttpRequests;
+package auction.HttpRequests;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,7 +16,8 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(Exception.class)
     public ResponseEntity<GlobalResponse<Void>> handleUnexpectedException(Exception ex) {
         var errors = List.of(new GlobalResponse.ErrorMessage(ex.getMessage()));
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(GlobalResponse.error(errors));
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body(GlobalResponse.error(errors));
     }
 
 
