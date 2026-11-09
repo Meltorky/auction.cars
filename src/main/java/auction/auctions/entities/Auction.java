@@ -82,4 +82,11 @@ public class Auction {
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "created_by", nullable = false)
     private User createdBy;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "winner_id")
+    private User winner;
+
+    @Column(precision = 19, scale = 2)
+    private BigDecimal finalPrice;
 }
