@@ -11,6 +11,8 @@ import auction.auctions.enums.AuctionStatus;
 import auction.auctions.enums.AuctionType;
 import auction.auctions.repositories.AuctionRepository;
 import auction.auctions.repositories.AuctionRequestRepository;
+import auction.bids.entities.Bid;
+import auction.bids.repositories.BidRepository;
 import auction.shared.HttpRequests.CustomResponseException;
 import auction.users.User;
 import lombok.RequiredArgsConstructor;
@@ -18,6 +20,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.time.Instant;
 import java.util.UUID;
 
 @Service
@@ -26,6 +29,7 @@ public class AuctionServiceImp implements AuctionService {
 
     private final AuctionRepository auctionRepository;
     private final AuctionRequestRepository requestRepository;
+    private final BidRepository bidRepository;
 
     // Creates an auction from an approved auction request.
     @Override
@@ -72,6 +76,101 @@ public class AuctionServiceImp implements AuctionService {
         request.setStatus(AuctionRequestStatus.AUCTION_CREATED);
 
         return mapToResponse(savedAuction);
+    }
+
+    // Starts a scheduled auction when its start time has arrived.
+    @Override
+    @Transactional
+    public AuctionResponseDto startAuction(UUID auctionId) {
+
+        Auction auction = auctionRepository.findById(auctionId)
+                .orElseThrow(() -> CustomResponseException.resourceNotFound(
+                        "Auction not found."
+                ));
+
+        if (auction.getStatus() != AuctionStatus.SCHEDULED) {
+            throw CustomResponseException.resourceMisMatch(
+                    "Only scheduled auctions can be started."
+            );
+        }
+
+        if (Instant.now().isBefore(auction.getStartsAt())) {
+            throw CustomResponseException.resourceMisMatch(
+                    "Auction start time has not arrived yet."
+            );
+        }
+
+        if (!Instant.now().isBefore(auction.getEndsAt())) {
+            throw CustomResponseException.resourceMisMatch(
+                    "Auction has already passed its ending time."
+            );
+        }
+
+        auction.setStatus(AuctionStatus.LIVE);
+
+        return mapToResponse(auction);
+    }
+
+    // Ends a live auction and determines its winner.
+    @Override
+    @Transactional
+    public AuctionResponseDto endAuction(UUID auctionId) {
+
+        Auction auction = auctionRepository.findById(auctionId)
+                .orElseThrow(() -> CustomResponseException.resourceNotFound(
+                        "Auction not found."
+                ));
+
+        if (auction.getStatus() != AuctionStatus.LIVE) {
+            throw CustomResponseException.resourceMisMatch(
+                    "Only live auctions can be ended."
+            );
+        }
+
+        Instant now = Instant.now();
+
+        if (now.isBefore(auction.getEndsAt())) {
+            throw CustomResponseException.resourceMisMatch(
+                    "Auction ending time has not arrived yet."
+            );
+        }
+
+        Bid highestBid = bidRepository
+                .findTopByAuction_IdOrderByAmountDescPlacedAtDesc(auctionId)
+                .orElse(null);
+
+        if (highestBid == null) {
+            auction.setResult(AuctionResult.UNSOLD);
+        } else {
+            auction.setWinner(highestBid.getBidder());
+            auction.setFinalPrice(highestBid.getAmount());
+            auction.setResult(AuctionResult.SOLD);
+        }
+
+        auction.setStatus(AuctionStatus.ENDED);
+
+        return mapToResponse(auction);
+    }
+
+    // Cancels an auction that has not started yet.
+    @Override
+    @Transactional
+    public AuctionResponseDto cancelAuction(UUID auctionId) {
+
+        Auction auction = auctionRepository.findById(auctionId)
+                .orElseThrow(() -> CustomResponseException.resourceNotFound(
+                        "Auction not found."
+                ));
+
+        if (auction.getStatus() != AuctionStatus.SCHEDULED) {
+            throw CustomResponseException.resourceMisMatch(
+                    "Only scheduled auctions can be cancelled."
+            );
+        }
+
+        auction.setStatus(AuctionStatus.CANCELLED);
+
+        return mapToResponse(auction);
     }
 
     // Ensures the auction has a valid start and end time.

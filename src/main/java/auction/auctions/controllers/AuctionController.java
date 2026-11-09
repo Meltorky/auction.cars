@@ -26,4 +26,28 @@ public class AuctionController {
     ) {
         return auctionService.createAuction(requestId, dto, currentUser);
     }
+
+    // Starts a scheduled auction.
+    @PatchMapping("/{auctionId}/start")
+    public AuctionResponseDto startAuction(
+            @PathVariable UUID auctionId
+    ) {
+        return auctionService.startAuction(auctionId);
+    }
+
+    // Ends a live auction and determines its winner.
+    @PatchMapping("/{auctionId}/end")
+    public AuctionResponseDto endAuction(
+            @PathVariable UUID auctionId
+    ) {
+        return auctionService.endAuction(auctionId);
+    }
+
+    // Cancels a scheduled auction.
+    @PatchMapping("/{auctionId}/cancel")
+    public AuctionResponseDto cancelAuction(
+            @PathVariable UUID auctionId
+    ) {
+        return auctionService.cancelAuction(auctionId);
+    }
 }

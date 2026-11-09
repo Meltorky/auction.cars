@@ -14,4 +14,13 @@ public interface AuctionService {
             AuctionCreateDto dto,
             User admin
     );
+
+    // Starts a scheduled auction when its start time has arrived.
+    AuctionResponseDto startAuction(UUID auctionId);
+
+    // Ends a live auction and determines its winner.
+    AuctionResponseDto endAuction(UUID auctionId);
+
+    // Cancels an auction that has not started yet.
+    AuctionResponseDto cancelAuction(UUID auctionId);
 }
