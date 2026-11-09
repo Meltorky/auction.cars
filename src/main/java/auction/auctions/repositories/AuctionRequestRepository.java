@@ -24,4 +24,6 @@ public interface AuctionRequestRepository
     );
 
     boolean existsByCar_Id(UUID carId);
+
+    List<AuctionRequest> findByCar_Owner_IdOrderBySubmittedAtDesc(UUID ownerId);
 }

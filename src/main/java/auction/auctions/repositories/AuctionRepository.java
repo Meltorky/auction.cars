@@ -1,6 +1,8 @@
 package auction.auctions.repositories;
 
 import auction.auctions.entities.Auction;
+import auction.auctions.entities.AuctionRequest;
+import auction.auctions.enums.AuctionRequestStatus;
 import auction.auctions.enums.AuctionStatus;
 import jakarta.persistence.LockModeType;
 import org.jspecify.annotations.NullMarked;
@@ -12,8 +14,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 @NullMarked
-public interface AuctionRepository
-        extends JpaRepository<Auction, UUID> {
+public interface AuctionRepository extends JpaRepository<Auction, UUID> {
 
     @Lock(LockModeType.PESSIMISTIC_WRITE)
     @Override
@@ -29,4 +30,10 @@ public interface AuctionRepository
             UUID carId,
             List<AuctionStatus> statuses
     );
+
+
+    List<AuctionRequest> findByStatusInOrderBySubmittedAtAsc(
+            List<AuctionRequestStatus> statuses
+    );
+
 }
